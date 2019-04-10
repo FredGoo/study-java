@@ -14,8 +14,8 @@
     </properties>
 
     <modules>
-        <module>dependencies</module>
-        <module>parent</module>
+        <module>dependencies-1x</module>
+        <module>parent-1x</module>
         <module>security</module>
     </modules>
 

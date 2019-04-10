@@ -6,11 +6,31 @@
 
     <parent>
         <groupId>gyqw</groupId>
-        <artifactId>study-java-parent</artifactId>
+        <artifactId>study-java-parent-1x</artifactId>
         <version>${revision}</version>
-        <relativePath>../parent</relativePath>
+        <relativePath>../parent-1x</relativePath>
     </parent>
 
     <artifactId>study-java-security</artifactId>
+    <version>${revision}</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>gyqw.study.security.SecurityApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
