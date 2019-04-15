@@ -14,9 +14,8 @@
     </properties>
 
     <modules>
-        <module>dependencies-1x</module>
-        <module>parent-1x</module>
         <module>security</module>
+        <module>activiti</module>
     </modules>
 
     <build>

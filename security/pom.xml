@@ -5,14 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>gyqw</groupId>
-        <artifactId>study-java-parent-1x</artifactId>
-        <version>${revision}</version>
-        <relativePath>../parent-1x</relativePath>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.20.RELEASE</version>
     </parent>
 
+    <groupId>gyqw</groupId>
     <artifactId>study-java-security</artifactId>
-    <version>${revision}</version>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
