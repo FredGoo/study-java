@@ -42,3 +42,15 @@
 
 用angular2写的建模应用的前端
 
+---
+
+## Demo Config
+
+#### application-default.properties
+
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/activiti
+spring.datasource.username=user
+spring.datasource.password=password
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+```
