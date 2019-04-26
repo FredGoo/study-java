@@ -29,7 +29,6 @@ public class LambdaTest {
 
     private Connector connector() {
         return integrationContext -> {
-            logger.info(integrationContext.toString());
             Content contentToDiscard = (Content) integrationContext.getInBoundVariables().get("content");
             contentToDiscard.getTags().add(" :( ");
             integrationContext.addOutBoundVariable("content",
