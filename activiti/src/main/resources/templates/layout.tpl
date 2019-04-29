@@ -4,10 +4,10 @@ html(lang:'en') {
     title(title)
     link(rel:'stylesheet', href:'/css/bootstrap.min.css')
     link(rel:'stylesheet', href:'/css/bootstrap-datepicker.min.css')
-    script(src:'/js/jquery.min.js'){}
-    script(src:'/js/bootstrap.min.js'){}
-    script(src:'/js/bootstrap-datepicker.min.js'){}
-    script(src:'/js/bootstrap-datepicker.zh-CN.min.js'){}
+    script(src:'/js/lib/jquery.min.js'){}
+    script(src:'/js/lib/bootstrap.min.js'){}
+    script(src:'/js/lib/bootstrap-datepicker.min.js'){}
+    script(src:'/js/lib/bootstrap-datepicker.zh-CN.min.js'){}
   }
   body {
     div(class:'container') {
@@ -20,17 +20,17 @@ html(lang:'en') {
 
           p{ul(class:'list-group') {
             li(class:'list-group-item') {
-              a(href:'/home/applicant') {
+              a(href:'/applicant/index') {
                 yield '申请者'
               }
             }
             li(class:'list-group-item') {
-              a(href:'/home/leader/leader1') {
+              a(href:'/leader/leader1') {
                 yield '领导1'
               }
             }
             li(class:'list-group-item') {
-              a(href:'/home/leader/leader2') {
+              a(href:'/leader/leader2') {
                 yield '领导2'
               }
             }

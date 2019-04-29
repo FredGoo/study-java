@@ -21,12 +21,10 @@ public class ActivitiApplication implements CommandLineRunner {
     private Logger logger = LoggerFactory.getLogger(ActivitiApplication.class);
 
     private final ProcessRuntime processRuntime;
-    private final TaskRuntime taskRuntime;
     private final SecurityUtil securityUtil;
 
-    public ActivitiApplication(ProcessRuntime processRuntime, TaskRuntime taskRuntime, SecurityUtil securityUtil) {
+    public ActivitiApplication(ProcessRuntime processRuntime, SecurityUtil securityUtil) {
         this.processRuntime = processRuntime;
-        this.taskRuntime = taskRuntime;
         this.securityUtil = securityUtil;
     }
 

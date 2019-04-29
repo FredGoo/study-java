@@ -32,7 +32,7 @@
         </bpmn2:endEvent>
         <bpmn2:sequenceFlow id="SequenceFlow_1c2qopx" name="拒绝" sourceRef="ExclusiveGateway_1okwwxa"
                             targetRef="EndEvent_1opxltm">
-            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${content.approved == true}
+            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${content.approved == false}
             </bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
         <bpmn2:exclusiveGateway id="ExclusiveGateway_0bizwjn">

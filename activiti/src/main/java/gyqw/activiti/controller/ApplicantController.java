@@ -1,14 +1,21 @@
 package gyqw.activiti.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import gyqw.activiti.util.SecurityUtil;
+import org.activiti.api.model.shared.model.VariableInstance;
 import org.activiti.api.process.model.ProcessInstance;
 import org.activiti.api.process.model.builders.DeleteProcessPayloadBuilder;
+import org.activiti.api.process.model.builders.GetVariablesPayloadBuilder;
 import org.activiti.api.process.model.builders.ProcessPayloadBuilder;
+import org.activiti.api.process.runtime.ProcessAdminRuntime;
 import org.activiti.api.process.runtime.ProcessRuntime;
 import org.activiti.api.runtime.shared.query.Page;
 import org.activiti.api.runtime.shared.query.Pageable;
 import org.activiti.api.task.model.Task;
 import org.activiti.api.task.model.builders.AssignTaskPayloadBuilder;
+import org.activiti.api.task.model.builders.CompleteTaskPayloadBuilder;
+import org.activiti.api.task.model.builders.GetTasksPayloadBuilder;
 import org.activiti.api.task.runtime.TaskAdminRuntime;
 import org.activiti.api.task.runtime.TaskRuntime;
 import org.slf4j.Logger;
@@ -27,19 +34,21 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author fred
- * 2019-04-28 11:42 AM
+ * 2019/04/29 22:32
  */
 @Controller
-@RequestMapping("home")
-public class HomeController {
-    private Logger logger = LoggerFactory.getLogger(HomeController.class);
+@RequestMapping("applicant")
+public class ApplicantController {
+    private Logger logger = LoggerFactory.getLogger(ApplicantController.class);
 
     private SecurityUtil securityUtil;
     private ProcessRuntime processRuntime;
+    private ProcessAdminRuntime processAdminRuntime;
     private TaskRuntime taskRuntime;
     private TaskAdminRuntime taskAdminRuntime;
 
@@ -63,12 +72,12 @@ public class HomeController {
         this.taskAdminRuntime = taskAdminRuntime;
     }
 
-    @GetMapping("index")
-    public ModelAndView index() {
-        return new ModelAndView("layout");
+    @Autowired
+    public void setProcessAdminRuntime(ProcessAdminRuntime processAdminRuntime) {
+        this.processAdminRuntime = processAdminRuntime;
     }
 
-    @RequestMapping("applicant")
+    @RequestMapping("index")
     public ModelAndView applicant(HttpServletRequest request,
                                   @RequestParam(value = "start", required = false) @DateTimeFormat(pattern = "yyyy/MM/dd") Date start,
                                   @RequestParam(value = "end", required = false) @DateTimeFormat(pattern = "yyyy/MM/dd") Date end,
@@ -78,23 +87,29 @@ public class HomeController {
                 !StringUtils.isEmpty(start) &&
                 !StringUtils.isEmpty(end) &&
                 !StringUtils.isEmpty(assign)) {
+            long time = end.getTime() - start.getTime();
+            int days = Math.toIntExact(time/86400000);
             Map<String, Object> map = new HashMap<>();
             map.put("assign", assign);
             map.put("start", start);
             map.put("end", end);
+            map.put("days", days);
+            map.put("approved", false);
 
             // 开始新的流程
             this.securityUtil.logInAs("applicant");
             ProcessInstance processInstance = this.processRuntime.start(ProcessPayloadBuilder
                     .start()
-                    .withProcessDefinitionId("11e7aab6-6961-11e9-ab78-0242bc0cc748")
+                    .withProcessDefinitionKey("process-7523a1c8-3161-4875-9436-8dd5586eaa01")
                     .withVariable("content", map)
                     .build());
             logger.info("-->> process instance: {}", processInstance.toString());
 
             // 用管理员角色获取所有任务
             this.securityUtil.logInAs("admin");
-            Page<Task> taskPage1 = this.taskAdminRuntime.tasks(Pageable.of(0, 10));
+            Page<Task> taskPage1 = this.taskAdminRuntime.tasks(Pageable.of(0, 10), new GetTasksPayloadBuilder()
+                    .withProcessInstanceId(processInstance.getId())
+                    .build());
             if (taskPage1.getTotalItems() > 0) {
                 for (Task task : taskPage1.getContent()) {
                     logger.info(task.toString());
@@ -117,10 +132,10 @@ public class HomeController {
         map.put("user", this.securityUtil.getUserDetails().getPrincipal());
         map.put("processList", processInstancePage.getContent());
         map.put("taskList", taskPage.getContent());
-        return new ModelAndView("home/applicant", "map", map);
+        return new ModelAndView("applicant", "map", map);
     }
 
-    @GetMapping("applicant/delete/process/{processInstanceId}")
+    @GetMapping("process/{processInstanceId}/delete")
     public ModelAndView applicantDeleteProcess(@PathVariable String processInstanceId) {
         this.securityUtil.logInAs("applicant");
         this.processRuntime.delete(
@@ -128,18 +143,52 @@ public class HomeController {
                         .withProcessInstanceId(processInstanceId)
                         .build());
 
-        return new ModelAndView("redirect:/home/applicant");
+        return homepage();
     }
 
-    @GetMapping("leader/{username}")
-    public ModelAndView leader(@PathVariable String username) {
-        this.securityUtil.logInAs(username);
+    @GetMapping("task/{taskId}/complete")
+    public ModelAndView completeTask(@PathVariable String taskId) {
+        this.securityUtil.logInAs("applicant");
 
-        Page<Task> taskPage = this.taskRuntime.tasks(Pageable.of(0, 10));
+        // 获取指定领导1
+        Task task = taskRuntime.task(taskId);
+        String processInstanceId = task.getProcessInstanceId();
+        List<VariableInstance> variableInstanceList = this.processRuntime.variables(new GetVariablesPayloadBuilder()
+                .withProcessInstanceId(processInstanceId)
+                .build());
+        String assign = "";
+        for (VariableInstance variableInstance : variableInstanceList) {
+            Gson gson = new Gson();
+            Map<String, Object> map = gson.fromJson(variableInstance.getValue().toString(), new TypeToken<Map<String, Object>>() {
+            }.getType());
+            assign = map.get("assign").toString();
+        }
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("user", this.securityUtil.getUserDetails().getPrincipal());
-        map.put("taskList", taskPage.getContent());
-        return new ModelAndView("home/leader", "map", map);
+        // 完成任务
+        this.taskRuntime.complete(new CompleteTaskPayloadBuilder()
+                .withTaskId(taskId)
+                .build());
+
+        // 指定审批领导1
+        this.securityUtil.logInAs("admin");
+        Page<Task> taskPage1 = this.taskAdminRuntime.tasks(Pageable.of(0, 10), new GetTasksPayloadBuilder()
+                .withProcessInstanceId(processInstanceId)
+                .build());
+        if (taskPage1.getTotalItems() > 0) {
+            for (Task task1 : taskPage1.getContent()) {
+                logger.info(task1.toString());
+
+                this.taskAdminRuntime.assign(new AssignTaskPayloadBuilder()
+                        .withTaskId(task1.getId())
+                        .withAssignee(assign)
+                        .build());
+            }
+        }
+
+        return homepage();
+    }
+
+    private ModelAndView homepage() {
+        return new ModelAndView("redirect:/applicant/index");
     }
 }
