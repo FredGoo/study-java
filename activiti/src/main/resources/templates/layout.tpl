@@ -17,16 +17,29 @@ html(lang:'en') {
               href:'http://docs.groovy-lang.org/docs/latest/html/documentation/markup-template-engine.html') {
               yield 'Groovy - Layout'
           }
-          ul(class:'nav') {
-            li {
+
+          p{ul(class:'list-group') {
+            li(class:'list-group-item') {
               a(href:'/home/applicant') {
                 yield '申请者'
               }
             }
+            li(class:'list-group-item') {
+              a(href:'/home/leader/leader1') {
+                yield '领导1'
+              }
+            }
+            li(class:'list-group-item') {
+              a(href:'/home/leader/leader2') {
+                yield '领导2'
+              }
+            }
           }
-        }
+
+          h3("用户: $username")
+        }}
       }
-      h1(user){}
+
       div { content() }
     }
   }
