@@ -32,7 +32,7 @@
         </bpmn2:endEvent>
         <bpmn2:sequenceFlow id="SequenceFlow_1c2qopx" name="拒绝" sourceRef="ExclusiveGateway_1okwwxa"
                             targetRef="EndEvent_1opxltm">
-            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${content.approved == false}
+            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${approved == false}
             </bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
         <bpmn2:exclusiveGateway id="ExclusiveGateway_0bizwjn">
@@ -42,7 +42,7 @@
         </bpmn2:exclusiveGateway>
         <bpmn2:sequenceFlow id="SequenceFlow_1afd0dw" name="通过" sourceRef="ExclusiveGateway_1okwwxa"
                             targetRef="ExclusiveGateway_0bizwjn">
-            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${content.approved == true}
+            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${approved == true}
             </bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
         <bpmn2:endEvent id="EndEvent_17esck3">
@@ -50,12 +50,12 @@
         </bpmn2:endEvent>
         <bpmn2:sequenceFlow id="SequenceFlow_1dd9y9h" name="小于等于两天" sourceRef="ExclusiveGateway_0bizwjn"
                             targetRef="EndEvent_17esck3">
-            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${content.days &lt;= 2}
+            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${days &lt;= 2}
             </bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
         <bpmn2:sequenceFlow id="SequenceFlow_10yblwv" name="大于两天" sourceRef="ExclusiveGateway_0bizwjn"
                             targetRef="Task_10oilv0">
-            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${content.days &gt; 2}
+            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${days &gt; 2}
             </bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
         <bpmn2:userTask id="Task_10oilv0" name="二级领导审批">
@@ -73,7 +73,7 @@
         </bpmn2:endEvent>
         <bpmn2:sequenceFlow id="SequenceFlow_0awkcgr" name="通过" sourceRef="ExclusiveGateway_00izbi5"
                             targetRef="EndEvent_0e58q5r">
-            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${content.approved == true}
+            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${approved == true}
             </bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
         <bpmn2:endEvent id="EndEvent_0iurhfk">
@@ -81,7 +81,7 @@
         </bpmn2:endEvent>
         <bpmn2:sequenceFlow id="SequenceFlow_1nfkkje" name="拒绝" sourceRef="ExclusiveGateway_00izbi5"
                             targetRef="EndEvent_0iurhfk">
-            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${content.approved == false}
+            <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${approved == false}
             </bpmn2:conditionExpression>
         </bpmn2:sequenceFlow>
     </bpmn2:process>

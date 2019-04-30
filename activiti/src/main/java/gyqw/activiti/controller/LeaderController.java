@@ -5,7 +5,9 @@ import org.activiti.api.process.runtime.ProcessRuntime;
 import org.activiti.api.runtime.shared.query.Page;
 import org.activiti.api.runtime.shared.query.Pageable;
 import org.activiti.api.task.model.Task;
+import org.activiti.api.task.model.builders.AssignTaskPayloadBuilder;
 import org.activiti.api.task.model.builders.CompleteTaskPayloadBuilder;
+import org.activiti.api.task.model.builders.GetTasksPayloadBuilder;
 import org.activiti.api.task.runtime.TaskAdminRuntime;
 import org.activiti.api.task.runtime.TaskRuntime;
 import org.slf4j.Logger;
@@ -66,9 +68,15 @@ public class LeaderController {
         return new ModelAndView("leader", "map", map);
     }
 
-    @GetMapping("task/{taskId}/{agreeOrNot}")
-    public ModelAndView taskAgreeOrNot(@PathVariable String taskId, @PathVariable String agreeOrNot) {
-        this.securityUtil.logInAs("leader1");
+    @GetMapping("{username}/task/{taskId}/{agreeOrNot}")
+    public ModelAndView taskAgreeOrNot(@PathVariable String username,
+                                       @PathVariable String taskId,
+                                       @PathVariable String agreeOrNot) {
+        this.securityUtil.logInAs(username);
+
+        // 获取进程id
+        Task task = taskRuntime.task(taskId);
+        String processInstanceId = task.getProcessInstanceId();
 
         boolean approved = false;
         if ("agree".equals(agreeOrNot)) {
@@ -76,13 +84,31 @@ public class LeaderController {
         }
         this.taskRuntime.complete(new CompleteTaskPayloadBuilder()
                 .withTaskId(taskId)
-                .withVariable("approved", approved)
+                .withVariable("approved", true)
                 .build());
 
-        return homepage();
+        // 查看是否还有leader2任务
+        if ("leader1".equals(username)) {
+            this.securityUtil.logInAs("admin");
+            Page<Task> taskPage1 = this.taskAdminRuntime.tasks(Pageable.of(0, 10), new GetTasksPayloadBuilder()
+                    .withProcessInstanceId(processInstanceId)
+                    .build());
+            if (taskPage1.getTotalItems() > 0) {
+                for (Task task1 : taskPage1.getContent()) {
+                    logger.info(task1.toString());
+
+                    this.taskAdminRuntime.assign(new AssignTaskPayloadBuilder()
+                            .withTaskId(task1.getId())
+                            .withAssignee("leader2")
+                            .build());
+                }
+            }
+        }
+
+        return homepage(username);
     }
 
-    private ModelAndView homepage() {
-        return new ModelAndView("redirect:/leader/leader1");
+    private ModelAndView homepage(String username) {
+        return new ModelAndView("redirect:/leader/" + username);
     }
 }

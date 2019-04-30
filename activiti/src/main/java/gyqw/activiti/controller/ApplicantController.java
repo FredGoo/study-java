@@ -1,7 +1,5 @@
 package gyqw.activiti.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import gyqw.activiti.util.SecurityUtil;
 import org.activiti.api.model.shared.model.VariableInstance;
 import org.activiti.api.process.model.ProcessInstance;
@@ -88,7 +86,7 @@ public class ApplicantController {
                 !StringUtils.isEmpty(end) &&
                 !StringUtils.isEmpty(assign)) {
             long time = end.getTime() - start.getTime();
-            int days = Math.toIntExact(time/86400000);
+            int days = Math.toIntExact(time / 86400000);
             Map<String, Object> map = new HashMap<>();
             map.put("assign", assign);
             map.put("start", start);
@@ -101,7 +99,7 @@ public class ApplicantController {
             ProcessInstance processInstance = this.processRuntime.start(ProcessPayloadBuilder
                     .start()
                     .withProcessDefinitionKey("process-7523a1c8-3161-4875-9436-8dd5586eaa01")
-                    .withVariable("content", map)
+                    .withVariables(map)
                     .build());
             logger.info("-->> process instance: {}", processInstance.toString());
 
@@ -158,10 +156,9 @@ public class ApplicantController {
                 .build());
         String assign = "";
         for (VariableInstance variableInstance : variableInstanceList) {
-            Gson gson = new Gson();
-            Map<String, Object> map = gson.fromJson(variableInstance.getValue().toString(), new TypeToken<Map<String, Object>>() {
-            }.getType());
-            assign = map.get("assign").toString();
+            if ("assign".equals(variableInstance.getName())) {
+                assign = variableInstance.getValue().toString();
+            }
         }
 
         // 完成任务
@@ -176,8 +173,6 @@ public class ApplicantController {
                 .build());
         if (taskPage1.getTotalItems() > 0) {
             for (Task task1 : taskPage1.getContent()) {
-                logger.info(task1.toString());
-
                 this.taskAdminRuntime.assign(new AssignTaskPayloadBuilder()
                         .withTaskId(task1.getId())
                         .withAssignee(assign)
