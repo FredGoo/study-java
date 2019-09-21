@@ -1,7 +1,6 @@
 package gyqw.jq;
 
 import com.arakelian.jq.*;
-import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 
 import java.io.BufferedReader;

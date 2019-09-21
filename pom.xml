@@ -14,9 +14,10 @@
     </properties>
 
     <modules>
-        <module>security</module>
         <module>activiti</module>
         <module>jq</module>
+        <module>cs</module>
+        <module>utils</module>
     </modules>
 
     <repositories>
