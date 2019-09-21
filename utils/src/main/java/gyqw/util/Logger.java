@@ -13,7 +13,7 @@ public class Logger {
         info(marker);
     }
 
-    public void info(String info) {
+    public void info(Object info) {
         System.out.println(info);
     }
 }
