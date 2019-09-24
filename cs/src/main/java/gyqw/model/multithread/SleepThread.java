@@ -10,7 +10,7 @@ public class SleepThread extends BaseThread {
     public void run() {
         try {
             Thread.sleep(10000);
-            logger.info("myThread run");
+            logger.info("SleepThread run");
         } catch (Exception e) {
             e.printStackTrace();
         }

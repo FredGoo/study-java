@@ -16,4 +16,8 @@ public class Logger {
     public void info(Object info) {
         System.out.println(info);
     }
+
+    public void info(String info, Object... param) {
+        System.out.println(String.format(info, param));
+    }
 }
