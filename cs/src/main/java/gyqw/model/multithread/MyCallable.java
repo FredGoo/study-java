@@ -1,4 +1,4 @@
-package gyqw.multithread;
+package gyqw.model.multithread;
 
 import java.util.concurrent.Callable;
 

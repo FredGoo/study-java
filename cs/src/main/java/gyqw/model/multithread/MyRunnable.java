@@ -1,4 +1,4 @@
-package gyqw.multithread;
+package gyqw.model.multithread;
 
 /**
  * @author fred

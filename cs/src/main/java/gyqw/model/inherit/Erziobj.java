@@ -1,4 +1,4 @@
-package gyqw.inherit;
+package gyqw.model.inherit;
 
 import gyqw.util.Logger;
 
