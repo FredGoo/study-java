@@ -1,10 +1,8 @@
 package gyqw.test;
 
-import gyqw.model.multithread.MyCallable;
+import gyqw.model.multithread.SleepThread;
 import gyqw.util.Logger;
 import org.junit.jupiter.api.Test;
-
-import java.util.concurrent.FutureTask;
 
 /**
  * @author fred
@@ -14,12 +12,15 @@ public class MultiThreadTest {
     private Logger logger = new Logger();
 
     @Test
-    public void test() throws Exception {
-        MyCallable mc = new MyCallable();
-        FutureTask<String> ft = new FutureTask<>(mc);
-        Thread thread = new Thread(ft);
-        thread.start();
+    public void sleepInterrupt() {
+        SleepThread myThread = new SleepThread();
+        myThread.start();
+        myThread.interrupt();
+    }
 
-        logger.info(ft.get());
+
+    @Test
+    public void whileInterrupt() {
+
     }
 }

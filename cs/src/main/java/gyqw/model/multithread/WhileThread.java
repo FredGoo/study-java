@@ -2,11 +2,13 @@ package gyqw.model.multithread;
 
 /**
  * @author fred
- * 2019-09-21 11:46 AM
+ * 2019-09-24 10:56 AM
  */
-public class MyThread extends Thread {
+public class WhileThread extends BaseThread {
 
     @Override
     public void run() {
+        while (true) {
+        }
     }
 }
