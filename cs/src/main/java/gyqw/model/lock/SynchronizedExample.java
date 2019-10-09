@@ -1,4 +1,4 @@
-package gyqw.model.multithread;
+package gyqw.model.lock;
 
 import gyqw.util.Logger;
 

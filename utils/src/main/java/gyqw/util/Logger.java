@@ -20,4 +20,8 @@ public class Logger {
     public void info(String info, Object... param) {
         System.out.println(String.format(info, param));
     }
+
+    public void error(Exception e) {
+        e.printStackTrace();
+    }
 }

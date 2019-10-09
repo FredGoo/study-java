@@ -2,12 +2,13 @@ package gyqw.test;
 
 import gyqw.model.multithread.ParentThreadThread;
 import gyqw.model.multithread.SleepThread;
-import gyqw.model.multithread.SynchronizedExample;
+import gyqw.model.multithread.ThreadUnsafeExample;
 import gyqw.model.multithread.WhileThread;
 import gyqw.util.Logger;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -77,12 +78,25 @@ public class MultiThreadTest {
         executorService.shutdownNow();
     }
 
+    /**
+     * 多个线程同时操作一个对象，没有上锁
+     *
+     * @throws InterruptedException
+     */
     @Test
-    public void synchronizedTest() {
-        SynchronizedExample e1 = new SynchronizedExample();
-        SynchronizedExample e2 = new SynchronizedExample();
+    public void threadUnsafeTest() throws InterruptedException {
+        final int threadSize = 1000;
+        ThreadUnsafeExample threadUnsafeExample = new ThreadUnsafeExample();
+        final CountDownLatch countDownLatch = new CountDownLatch(threadSize);
         ExecutorService executorService = Executors.newCachedThreadPool();
-        executorService.execute(() -> e1.func1("e1"));
-        executorService.execute(() -> e2.func1("e2"));
+        for (int i = 0; i < threadSize; i++) {
+            executorService.execute(() -> {
+                threadUnsafeExample.add();
+                countDownLatch.countDown();
+            });
+        }
+        countDownLatch.await();
+        executorService.shutdown();
+        logger.info(threadUnsafeExample.get());
     }
 }
