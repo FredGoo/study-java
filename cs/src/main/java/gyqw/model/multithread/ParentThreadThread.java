@@ -8,13 +8,12 @@ public class ParentThreadThread extends BaseThread {
 
     @Override
     public void run() {
-        logger.info(currentThread().getName());
-        logger.info(getName());
+        printCurrentThread("run");
 
-        while (!isInterrupted()) {
+        while (!interrupted()) {
             logger.info("while isInterrupted() %s", isInterrupted());
         }
 
-        logger.info("interrupted() %s", interrupted());
+        logger.info("interrupted() end %s", interrupted());
     }
 }

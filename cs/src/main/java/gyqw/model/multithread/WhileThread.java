@@ -8,13 +8,16 @@ public class WhileThread extends BaseThread {
 
     @Override
     public void run() {
+        printCurrentThread("run");
+
         int i = 0;
-        logger.info("WhileThread loop " + i + " " + isInterrupted());
+        logger.info("WhileThread loop %s %s", i, interrupted());
 
         while (!interrupted()) {
             i++;
-            logger.info("WhileThread loop " + i + " " + isInterrupted());
+            logger.info("WhileThread loop %s", i);
         }
-        logger.info("WhileThread end " + isInterrupted());
+
+        logger.info("WhileThread end");
     }
 }
