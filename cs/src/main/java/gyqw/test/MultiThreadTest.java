@@ -81,7 +81,7 @@ public class MultiThreadTest {
     /**
      * 多个线程同时操作一个对象，没有上锁
      *
-     * @throws InterruptedException
+     * @throws InterruptedException 中断异常
      */
     @Test
     public void threadUnsafeTest() throws InterruptedException {

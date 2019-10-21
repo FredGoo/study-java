@@ -86,4 +86,42 @@ public class LockTest {
         }
         executorService.shutdown();
     }
+
+    @Test
+    public void deadLockTest() {
+        Object obj1 = new Object();
+        Object obj2 = new Object();
+
+        new Thread(() -> {
+            synchronized (obj1) {
+                logger.info("%s get obj1", Thread.currentThread().getName());
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+            }
+
+            logger.info("%s waiting get obj2", Thread.currentThread().getName());
+            synchronized (obj2) {
+                logger.info("%s get obj2", Thread.currentThread().getName());
+            }
+        }).start();
+
+        new Thread(() -> {
+            synchronized (obj2) {
+                logger.info("%s get obj2", Thread.currentThread().getName());
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+            }
+
+            logger.info("%s waiting get obj1", Thread.currentThread().getName());
+            synchronized (obj1) {
+                logger.info("%s get obj1", Thread.currentThread().getName());
+            }
+        }).start();
+    }
 }
