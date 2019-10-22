@@ -22,8 +22,7 @@ public class ThreadTest {
         ThreadInfo[] threadInfos = threadMXBean.dumpAllThreads(false, false);
         // 遍历线程信息，仅打印线程 ID 和线程名称信息
         for (ThreadInfo threadInfo : threadInfos) {
-            logger.info("[" + threadInfo.getThreadId() + "] " + threadInfo.getThreadName());
+            logger.info("[%s] %s", threadInfo.getThreadId(), threadInfo.getThreadName());
         }
-
     }
 }
