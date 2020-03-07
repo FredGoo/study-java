@@ -56,4 +56,13 @@ public class GcTest {
             thread.start();
         }
     }
+
+    @Test
+    public void runtimeConstantPoolOOMTest() {
+        List<String> stringList = new ArrayList<>();
+        int i = 0;
+        while (true) {
+            stringList.add(String.valueOf(i++).intern());
+        }
+    }
 }

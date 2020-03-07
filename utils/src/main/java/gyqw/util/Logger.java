@@ -21,7 +21,7 @@ public class Logger {
         System.out.println(String.format(info, param));
     }
 
-    public void error(Exception e) {
+    public void error(Throwable e) {
         e.printStackTrace();
     }
 }
