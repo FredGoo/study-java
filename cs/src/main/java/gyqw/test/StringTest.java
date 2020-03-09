@@ -21,4 +21,11 @@ public class StringTest {
         logger.info(s1 == s3);
         logger.info(s3 == s4);
     }
+
+    @Test
+    public void internTest() {
+        String s1 = "java";
+        String s2 = new StringBuilder("ja").append("va1").toString();
+        logger.info(s2 == s2.intern());
+    }
 }

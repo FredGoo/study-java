@@ -3,6 +3,8 @@ package gyqw.test;
 import gyqw.model.gc.OOMObject;
 import gyqw.model.gc.SOFObject;
 import gyqw.util.Logger;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -57,12 +59,30 @@ public class GcTest {
         }
     }
 
+    /**
+     * 1.7以后常量池在堆里面，不会导致永久带或者metaspace溢出
+     */
     @Test
     public void runtimeConstantPoolOOMTest() {
         List<String> stringList = new ArrayList<>();
-        int i = 0;
+        int i = 1;
+        String s = "测试字符串";
         while (true) {
-            stringList.add(String.valueOf(i++).intern());
+            s += i;
+//            stringList.add(s.intern());
+            stringList.add(String.valueOf(i).intern());
+            i++;
+        }
+    }
+
+    @Test
+    public void methodAreaOOM() {
+        while (true) {
+            Enhancer enhancer = new Enhancer();
+            enhancer.setSuperclass(OOMObject.class);
+            enhancer.setUseCache(false);
+            enhancer.setCallback((MethodInterceptor) (o, method, objects, methodProxy) -> methodProxy.invokeSuper(o, objects));
+            enhancer.create();
         }
     }
 }
