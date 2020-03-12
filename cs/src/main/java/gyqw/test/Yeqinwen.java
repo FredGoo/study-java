@@ -24,5 +24,13 @@ public class Yeqinwen {
         int sum = m++ + ++n - n-- - --m + n-- - --m;
 
         logger.info("m: %s, n: %s, sum: %s", m, n, sum);
+
+        int x = 1;
+        int y = x++;
+        logger.info("x: %s, y: %s", x, y);
+
+        x = 1;
+        y = ++x;
+        logger.info("x: %s, y: %s", x, y);
     }
 }
