@@ -12,8 +12,17 @@ public class Yeqinwen {
 
     @Test
     public void charTest() {
-        int x =25508;
+        int x = 25508;
         char y = (char) x;
         logger.info(y);
+    }
+
+    @Test
+    public void calcTest() {
+        int m = 1;
+        int n = 2;
+        int sum = m++ + ++n - n-- - --m + n-- - --m;
+
+        logger.info("m: %s, n: %s, sum: %s", m, n, sum);
     }
 }
