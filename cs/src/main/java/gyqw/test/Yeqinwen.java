@@ -3,6 +3,8 @@ package gyqw.test;
 import gyqw.util.Logger;
 import org.junit.jupiter.api.Test;
 
+import java.util.Scanner;
+
 /**
  * @author fred
  * 2020-03-11 3:42 PM
@@ -32,5 +34,16 @@ public class Yeqinwen {
         x = 1;
         y = ++x;
         logger.info("x: %s, y: %s", x, y);
+    }
+
+    @Test
+    public void scannerTest() {
+        Scanner scanner = new Scanner(System.in);
+        int i = scanner.nextInt();
+        logger.info(i);
+
+        switch (1){
+
+        }
     }
 }
