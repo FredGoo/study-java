@@ -17,6 +17,7 @@
         <module>activiti</module>
         <module>jq</module>
         <module>cs</module>
+        <module>shardingsphere</module>
         <module>utils</module>
     </modules>
 
