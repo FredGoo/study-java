@@ -13,5 +13,6 @@
 
     <modules>
         <module>datamask-asterisk</module>
+        <module>jdbc</module>
     </modules>
 </project>
