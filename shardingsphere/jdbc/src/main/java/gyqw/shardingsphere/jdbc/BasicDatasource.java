@@ -42,11 +42,9 @@ public class BasicDatasource {
         // 获取数据源对象
         DataSource dataSource = EncryptDataSourceFactory.createDataSource(hikariDataSource, encryptRuleConfig, new Properties());
 
-        String sql = "SELECT i.* FROM t_order o JOIN t_order_item i ON o.order_id=i.order_id WHERE o.user_id=? AND o.order_id=?";
+        String sql = "SELECT TRAN_STACK_NO FROM T_TABLE WHERE STATUS = 0 AND PLAN_IN_DATE BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE, INTERVAL 7 DAY) ORDER BY PLAN_IN_DATE ASC";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, 10);
-            ps.setInt(2, 1000);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     System.out.println(rs.next());
