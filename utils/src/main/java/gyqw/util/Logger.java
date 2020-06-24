@@ -13,15 +13,15 @@ public class Logger {
         info(marker);
     }
 
-    public void info(Object info) {
+    public static void info(Object info) {
         System.out.println(info);
     }
 
-    public void info(String info, Object... param) {
+    public static void info(String info, Object... param) {
         System.out.println(String.format(info, param));
     }
 
-    public void error(Throwable e) {
+    public static void error(Throwable e) {
         e.printStackTrace();
     }
 }

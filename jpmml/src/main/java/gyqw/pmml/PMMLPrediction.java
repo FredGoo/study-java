@@ -1,7 +1,10 @@
 package gyqw.pmml;
 
 import org.dmg.pmml.FieldName;
+import org.dmg.pmml.Model;
 import org.dmg.pmml.PMML;
+import org.dmg.pmml.mining.MiningModel;
+import org.dmg.pmml.scorecard.Scorecard;
 import org.jpmml.evaluator.*;
 
 import java.io.FileInputStream;
@@ -22,7 +25,7 @@ public class PMMLPrediction {
         PMML pmml = new PMML();
         InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("classpath:lightgbm.pmml");
+            inputStream = new FileInputStream("/home/fred/git/study-java/jpmml/src/main/resources/lightgbm.pmml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,9 +45,11 @@ public class PMMLPrediction {
                 e.printStackTrace();
             }
         }
+
         ModelEvaluatorFactory modelEvaluatorFactory = ModelEvaluatorFactory.newInstance();
-        Evaluator evaluator = modelEvaluatorFactory.newModelEvaluator(pmml, null);
-        pmml = null;
+        Model model = new MiningModel();
+        Evaluator evaluator = modelEvaluatorFactory.newModelEvaluator(pmml, model);
+
         return evaluator;
     }
 
@@ -56,7 +61,7 @@ public class PMMLPrediction {
         data.put("x4", d);
         List<InputField> inputFields = evaluator.getInputFields();
         // 过模型的原始特征，从画像中获取数据，作为模型输入
-        Map<FieldName, FieldValue> arguments = new LinkedHashMap<FieldName, FieldValue>();
+        Map<FieldName, FieldValue> arguments = new LinkedHashMap<>();
         for (InputField inputField : inputFields) {
             FieldName inputFieldName = inputField.getName();
             Object rawValue = data.get(inputFieldName.getValue());
