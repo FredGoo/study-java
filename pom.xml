@@ -20,6 +20,7 @@
         <module>cs</module>
         <module>shardingsphere</module>
         <module>jpmml</module>
+        <module>spring</module>
         <module>utils</module>
     </modules>
 
