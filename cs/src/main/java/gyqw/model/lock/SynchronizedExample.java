@@ -1,18 +1,18 @@
 package gyqw.model.lock;
 
-import gyqw.util.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author fred
  * 2019-10-09 11:09 AM
  */
+@Slf4j
 public class SynchronizedExample {
-    private Logger logger = new Logger();
 
     public void func1(String mark) {
         synchronized (SynchronizedExample.class) {
             for (int i = 0; i < 10; i++) {
-                logger.info("mark: %s ,num: %s", mark, i);
+                log.info("mark: {} ,num: {}", mark, i);
             }
         }
     }

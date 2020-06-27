@@ -1,6 +1,6 @@
 package gyqw.test;
 
-import gyqw.util.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.lang.management.ManagementFactory;
@@ -11,8 +11,8 @@ import java.lang.management.ThreadMXBean;
  * @author fred
  * 2019-10-21 3:32 PM
  */
+@Slf4j
 public class ThreadTest {
-    private Logger logger = new Logger();
 
     @Test
     public void mxBean() {
@@ -22,7 +22,7 @@ public class ThreadTest {
         ThreadInfo[] threadInfos = threadMXBean.dumpAllThreads(false, false);
         // 遍历线程信息，仅打印线程 ID 和线程名称信息
         for (ThreadInfo threadInfo : threadInfos) {
-            logger.info("[%s] %s", threadInfo.getThreadId(), threadInfo.getThreadName());
+            log.info("[{}] {}", threadInfo.getThreadId(), threadInfo.getThreadName());
         }
     }
 }

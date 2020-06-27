@@ -1,15 +1,15 @@
 package gyqw.model.inherit;
 
-import gyqw.util.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author fred
  * 2019-09-21 11:08 AM
  */
+@Slf4j
 public class PengyouObj {
-    private static Logger logger = new Logger();
 
     public PengyouObj(String name) {
-        logger.info(name);
+        log.info(name);
     }
 }

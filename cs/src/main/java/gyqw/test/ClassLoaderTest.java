@@ -1,29 +1,29 @@
 package gyqw.test;
 
 import gyqw.model.classloader.DeadLoopModel;
-import gyqw.util.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 /**
  * @author fred
  * 2020-01-21 3:06 PM
  */
+@Slf4j
 public class ClassLoaderTest {
-    private Logger logger = new Logger();
 
     @Test
     public void parentLoaderTest() {
-        logger.info("ClassLoaderTest's ClassLoader is: %s", ClassLoaderTest.class.getClassLoader());
-        logger.info("The Parent of ClassLoaderTest's ClassLoader is: %s", ClassLoaderTest.class.getClassLoader().getParent());
-        logger.info("The GrandParent of ClassLoaderTest's ClassLoader is: %s", ClassLoaderTest.class.getClassLoader().getParent().getParent());
+        log.info("ClassLoaderTest's ClassLoader is: {}", ClassLoaderTest.class.getClassLoader());
+        log.info("The Parent of ClassLoaderTest's ClassLoader is: {}", ClassLoaderTest.class.getClassLoader().getParent());
+        log.info("The GrandParent of ClassLoaderTest's ClassLoader is: {}", ClassLoaderTest.class.getClassLoader().getParent().getParent());
     }
 
     @Test
     public void deadLoopTest() {
         Runnable script = () -> {
-            logger.info("%s start", Thread.currentThread());
+            log.info("{} start", Thread.currentThread());
             DeadLoopModel dlm = new DeadLoopModel();
-            logger.info("%s run over", Thread.currentThread());
+            log.info("{} run over", Thread.currentThread());
         };
 
         Thread thread1 = new Thread(script);

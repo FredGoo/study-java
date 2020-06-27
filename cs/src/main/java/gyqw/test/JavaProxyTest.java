@@ -1,12 +1,12 @@
 package gyqw.test;
 
-import gyqw.util.Logger;
 import javassist.*;
 import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ClassFile;
 import javassist.bytecode.ConstPool;
 import javassist.bytecode.FieldInfo;
 import javassist.bytecode.annotation.Annotation;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -15,8 +15,8 @@ import java.lang.reflect.Method;
  * @author fred
  * 2019-12-09 11:57 AM
  */
+@Slf4j
 public class JavaProxyTest {
-    private Logger logger = new Logger();
 
     @Test
     public void javassist() {
@@ -48,7 +48,7 @@ public class JavaProxyTest {
 
             Method method = obj.getClass().getMethod("getName");
             // 调用字节码生成类的execute方法
-            logger.info(method.invoke(obj));
+            log.info("invoke: {}",method.invoke(obj));
         } catch (Exception e) {
         }
     }
