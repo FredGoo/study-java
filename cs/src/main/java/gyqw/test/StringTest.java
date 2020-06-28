@@ -1,14 +1,14 @@
 package gyqw.test;
 
-import gyqw.util.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 /**
  * @author fred
  * 2019-12-31 2:24 PM
  */
+@Slf4j
 public class StringTest {
-    private Logger logger = new Logger();
 
     @Test
     public void catTest() {
@@ -17,15 +17,15 @@ public class StringTest {
         String s3 = new String("cat");
         String s4 = new String("cat");
 
-        logger.info(s1 == s2);
-        logger.info(s1 == s3);
-        logger.info(s3 == s4);
+        log.info("s1 == s2: {}", s1 == s2);
+        log.info("s1 == s3: {}", s1 == s3);
+        log.info("s3 == s4: {}", s3 == s4);
     }
 
     @Test
     public void internTest() {
         String s1 = "java";
         String s2 = new StringBuilder("ja").append("va1").toString();
-        logger.info(s2 == s2.intern());
+        log.info("s2 == s2.intern(): {}", s2 == s2.intern());
     }
 }

@@ -1,24 +1,24 @@
 package gyqw.model.inherit;
 
-import gyqw.util.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author fred
  * 2019-09-21 10:48 AM
  */
+@Slf4j
 public class YeyeObj {
-    private static Logger logger = new Logger("static field yeye");
     private PengyouObj pengyouObj = new PengyouObj("field yeye1");
 
     static {
-        logger.info("static block yeye");
+        log.info("static block yeye");
     }
 
     {
-        logger.info("block yeye");
+        log.info("block yeye");
     }
 
     public YeyeObj() {
-        logger.info("construct yeye");
+        log.info("construct yeye");
     }
 }
