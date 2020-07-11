@@ -2,7 +2,7 @@ package gyqw.test;
 
 import gyqw.model.lock.ReentrantLockExample;
 import gyqw.model.lock.SynchronizedExample;
-import gyqw.util.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.*;
@@ -11,8 +11,8 @@ import java.util.concurrent.*;
  * @author fred
  * 2019-10-09 2:06 PM
  */
+@Slf4j
 public class LockTest {
-    private Logger logger = new Logger();
 
     @Test
     public void synchronizedTest() {
@@ -38,12 +38,12 @@ public class LockTest {
         ExecutorService executorService = Executors.newCachedThreadPool();
         for (int i = -1; i < totalThread; i++) {
             executorService.execute(() -> {
-                logger.info("run");
+                log.info("run");
                 countDownLatch.countDown();
             });
         }
         countDownLatch.await();
-        logger.info("end");
+        log.info("end");
         executorService.shutdown();
     }
 
@@ -54,13 +54,13 @@ public class LockTest {
         ExecutorService executorService = Executors.newCachedThreadPool();
         for (int i = 0; i < totalThread; i++) {
             executorService.execute(() -> {
-                logger.info("run");
+                log.info("run");
                 try {
                     cyclicBarrier.await();
                 } catch (Exception e) {
-                    logger.info(e.getMessage());
+                    log.info(e.getMessage());
                 }
-                logger.info("after");
+                log.info("after");
             });
         }
         executorService.shutdown();
@@ -76,9 +76,9 @@ public class LockTest {
             executorService.execute(() -> {
                 try {
                     semaphore.acquire();
-                    logger.info(semaphore.availablePermits());
+                    log.info("availablePermits: {}", semaphore.availablePermits());
                 } catch (InterruptedException e) {
-                    logger.error(e);
+                    log.error("InterruptedException", e);
                 } finally {
                     semaphore.release();
                 }
@@ -94,7 +94,7 @@ public class LockTest {
 
         new Thread(() -> {
             synchronized (obj1) {
-                logger.info("%s get obj1", Thread.currentThread().getName());
+                log.info("{} get obj1", Thread.currentThread().getName());
             }
 
             try {
@@ -102,24 +102,24 @@ public class LockTest {
             } catch (Exception e) {
             }
 
-            logger.info("%s waiting get obj2", Thread.currentThread().getName());
+            log.info("{} waiting get obj2", Thread.currentThread().getName());
             synchronized (obj2) {
-                logger.info("%s get obj2", Thread.currentThread().getName());
+                log.info("%s get obj2", Thread.currentThread().getName());
             }
         }, "线程1").start();
 
         new Thread(() -> {
             synchronized (obj1) {
-                logger.info("%s get obj1", Thread.currentThread().getName());
+                log.info("{} get obj1", Thread.currentThread().getName());
 
                 try {
                     Thread.sleep(1000);
                 } catch (Exception e) {
                 }
 
-                logger.info("%s waiting get obj2", Thread.currentThread().getName());
+                log.info("%s waiting get obj2", Thread.currentThread().getName());
                 synchronized (obj2) {
-                    logger.info("%s get obj2", Thread.currentThread().getName());
+                    log.info("{} get obj2", Thread.currentThread().getName());
                 }
             }
         }, "线程2").start();

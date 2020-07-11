@@ -4,7 +4,7 @@ import gyqw.model.multithread.ParentThreadThread;
 import gyqw.model.multithread.SleepThread;
 import gyqw.model.multithread.ThreadUnsafeExample;
 import gyqw.model.multithread.WhileThread;
-import gyqw.util.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,8 +16,8 @@ import java.util.concurrent.Executors;
  * @author fred
  * 2019-09-24 10:24 AM
  */
+@Slf4j
 public class MultiThreadTest {
-    private Logger logger = new Logger();
 
     /**
      * 制造InterruptedException异常
@@ -47,7 +47,7 @@ public class MultiThreadTest {
      */
     @Test
     public void whileInterruptCurrentThread() throws InterruptedException {
-        logger.info(Thread.currentThread().getName());
+        log.info(Thread.currentThread().getName());
 
         WhileThread whileThread = new WhileThread();
         Thread thread = new Thread(whileThread);
@@ -97,6 +97,6 @@ public class MultiThreadTest {
         }
         countDownLatch.await();
         executorService.shutdown();
-        logger.info(threadUnsafeExample.get());
+        log.info("threadUnsafeExample: {}", threadUnsafeExample.get());
     }
 }

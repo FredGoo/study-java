@@ -2,7 +2,7 @@ package gyqw.test;
 
 import gyqw.model.gc.OOMObject;
 import gyqw.model.gc.SOFObject;
-import gyqw.util.Logger;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import org.junit.jupiter.api.Test;
@@ -16,8 +16,8 @@ import java.util.List;
  * @author fred
  * 2019-12-31 3:00 PM
  */
+@Slf4j
 public class GcTest {
-    private Logger logger = new Logger();
     private static final int _1MB = 1024 * 1024;
 
     @Test
@@ -35,7 +35,7 @@ public class GcTest {
         try {
             stackLeak(sofObject);
         } catch (Throwable e) {
-            logger.info(sofObject.getLength());
+            log.info(String.valueOf(sofObject.getLength()));
         }
     }
 
