@@ -21,6 +21,7 @@
         <module>shardingsphere</module>
         <module>jpmml</module>
         <module>spring</module>
+        <module>spring-cloud</module>
         <module>starter</module>
     </modules>
 
